@@ -9,6 +9,7 @@ requests = "*"
 uWSGI = "*"
 flask-restx = "*"
 gunicorn = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
