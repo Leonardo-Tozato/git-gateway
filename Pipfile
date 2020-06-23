@@ -8,6 +8,7 @@ Flask = "*"
 requests = "*"
 uWSGI = "*"
 flask-restx = "*"
+gunicorn = "*"
 
 [dev-packages]
 

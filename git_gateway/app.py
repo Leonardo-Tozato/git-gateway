@@ -29,4 +29,4 @@ api.add_resource(User, '/users/<string:username>/repos', endpoint='user_ep')
 api.add_resource(Repo, '/repos/<string:username>/<string:repo_name>', endpoint='repo_ep')
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8765)
+    app.run(debug=True)
