@@ -1,15 +1,22 @@
 from flask_restx import Resource
 from http import HTTPStatus
 from git_gateway.services.repo import Repo as RepoService
+from git_gateway.lib.cache import flask_cache
 
 
 class Repo(Resource):
     def get(self, username: str, repo_name: str):
+        cache_key = f"repos::{username}::{repo_name}"
+        response = flask_cache.get(cache_key)
+
+        if response:
+            return response
+
         repo_details = RepoService.repo_details(username, repo_name)
         if not repo_details:
             return {'message': 'Not Found'}, HTTPStatus.NOT_FOUND
 
-        return {
+        response = {
             'source': 'Github',
             'external_id': repo_details.get('id'),
             'name': repo_details.get('name'),
@@ -26,3 +33,6 @@ class Repo(Resource):
             'has_wiki': repo_details.get('has_wiki'),
             'has_pages': repo_details.get('has_pages')
         }
+
+        flask_cache.set(cache_key, response, 60)
+        return response

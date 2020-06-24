@@ -10,6 +10,10 @@ uWSGI = "*"
 flask-restx = "*"
 gunicorn = "*"
 python-dotenv = "*"
+flask-caching = "*"
+redis = "*"
+pymongo = "*"
+mongoengine = "*"
 
 [dev-packages]
 

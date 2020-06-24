@@ -4,10 +4,11 @@ from flask import Flask
 from flask_restx import Resource, Api
 from git_gateway.resources.user import User
 from git_gateway.resources.repo import Repo
+from git_gateway.lib.cache import flask_cache
 
 app = Flask(__name__)
 api = Api(app)
-
+flask_cache.init_app(app)
 
 @api.errorhandler(Exception)
 def handle_internal_server_error(error):
