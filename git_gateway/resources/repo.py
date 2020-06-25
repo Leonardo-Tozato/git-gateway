@@ -2,7 +2,11 @@ from flask_restx import Resource
 from http import HTTPStatus
 from git_gateway.services.repo import Repo as RepoService
 from git_gateway.lib.cache import flask_cache
+from git_gateway.lib.db import mongo_client
+from os import environ
 
+db = mongo_client[environ.get('MONGO_DATABASE')]
+repositories = db['repositories']
 
 class Repo(Resource):
     def get(self, username: str, repo_name: str):
@@ -15,6 +19,12 @@ class Repo(Resource):
         repo_details = RepoService.repo_details(username, repo_name)
         if not repo_details:
             return {'message': 'Not Found'}, HTTPStatus.NOT_FOUND
+
+        repo_full_name = repo_details.get('full_name')
+        repositories.replace_one({'full_name': repo_full_name}, {
+            'full_name': repo_full_name,
+            'repository': repo_details
+        }, upsert=True)
 
         response = {
             'source': 'Github',
