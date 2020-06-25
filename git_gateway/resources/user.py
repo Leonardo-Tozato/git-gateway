@@ -1,9 +1,9 @@
 from http import HTTPStatus
-from flask_restx import Resource
 from git_gateway.services.user import User as UserService
 from git_gateway.lib.cache import flask_cache
 from git_gateway.lib.db import mongo_client
 from os import environ
+from flask_restx import Resource
 
 db = mongo_client[environ.get('MONGO_DATABASE')]
 user_repos = db['user_repos']
@@ -21,11 +21,7 @@ class User(Resource):
         if not repos or not len(repos):
             return {'message': 'Not Found'}, HTTPStatus.NOT_FOUND
 
-        user_repos.replace_one({'owner_username': username}, {
-            'owner_username': username,
-            'repos': repos
-        }, upsert=True)
-
+        self.send_repos_db(repos, username)
         response = list(map(lambda r: {
             'source': 'Github',
             'external_id': r.get('id'),
@@ -34,3 +30,9 @@ class User(Resource):
         }, repos))
         flask_cache.set(cache_key, response, 60)
         return response
+
+    def send_repos_db(self, repos, username):
+        user_repos.replace_one({'owner_username': username}, {
+            'owner_username': username,
+            'repos': repos
+        }, upsert=True)

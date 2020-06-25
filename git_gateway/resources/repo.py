@@ -20,11 +20,7 @@ class Repo(Resource):
         if not repo_details:
             return {'message': 'Not Found'}, HTTPStatus.NOT_FOUND
 
-        repo_full_name = repo_details.get('full_name')
-        repositories.replace_one({'full_name': repo_full_name}, {
-            'full_name': repo_full_name,
-            'repository': repo_details
-        }, upsert=True)
+        self.send_repo_detail_db(repo_details)
 
         response = {
             'source': 'Github',
@@ -35,10 +31,10 @@ class Repo(Resource):
             'fork': repo_details.get('fork'),
             'pushed_at': repo_details.get('pushed_at'),
             'git_url': repo_details.get('git_url'),
-            'ssh_url': repo_details.get('pushed_at'),
+            'ssh_url': repo_details.get('ssh_url'),
             'language': repo_details.get('language'),
             'has_issues': repo_details.get('has_issues'),
-            'has_project': repo_details.get('has_projects'),
+            'has_projects': repo_details.get('has_projects'),
             'has_downloads': repo_details.get('has_downloads'),
             'has_wiki': repo_details.get('has_wiki'),
             'has_pages': repo_details.get('has_pages')
@@ -46,3 +42,10 @@ class Repo(Resource):
 
         flask_cache.set(cache_key, response, 60)
         return response
+
+    def send_repo_detail_db(self, repo_details):
+        repo_full_name = repo_details.get('full_name')
+        repositories.replace_one({'full_name': repo_full_name}, {
+            'full_name': repo_full_name,
+            'repository': repo_details
+        }, upsert=True)
