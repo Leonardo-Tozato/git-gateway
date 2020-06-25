@@ -10,12 +10,12 @@ RUN apk add --virtual .build-dependencies \
 RUN apk add --no-cache pcre
 
 WORKDIR $APPDIR
-COPY /git_gateway $APPDIR
-COPY Pipfile $APPDIR
-COPY Pipfile.lock $APPDIR
+ADD /git_gateway $APPDIR
+ADD Pipfile $APPDIR
+ADD Pipfile.lock $APPDIR
 
 RUN pip install pipenv && \
 cd $APPDIR && \
-pipenv install --system --deploy --ignore-pipfile && \
+pipenv install --dev --system --deploy --ignore-pipfile && \
 apk del .build-dependencies && \
 rm -rf /var/cache/apk/*

@@ -26,6 +26,7 @@ services:
   web:
     build: .
     restart: unless-stopped
+    container_name: git_gateway
     expose:
       - ${API_EXPOSED_PORT}
     env_file:

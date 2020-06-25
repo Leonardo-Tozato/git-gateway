@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 Flask = "*"
 requests = "*"
-uWSGI = "*"
 flask-restx = "*"
 gunicorn = "*"
 python-dotenv = "*"
@@ -16,6 +15,9 @@ pymongo = "*"
 mongoengine = "*"
 
 [dev-packages]
+pytest = "*"
+pytest-mock = "*"
+requests-mock = "*"
 
 [requires]
 python_version = "3.7"
