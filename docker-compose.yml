@@ -7,39 +7,37 @@ services:
       - .env
     image: redis:6.0.5-alpine
     volumes:
-      - redis:/data
+      - ${REDIS_VOLUME}
     ports:
-      - 6379:6379
-    container_name: redis_cache
+      - ${REDIS_PORT_MAP}
+    container_name: ${REDIS_CONTAINER_NAME}
 
   mongodb:
     image: mongo:4.4.0-rc10-bionic
-    container_name: mongodb
+    container_name: ${MONGO_CONTAINER_NAME}
     restart: unless-stopped
     ports:
-      - 27017:27017
+      - ${MONGO_PORT_MAP}
     env_file:
       - .env
     volumes:
-      - ../mongo_data:/data/db
+      - ${MONGO_VOLUME}
 
   web:
     build: .
     restart: unless-stopped
     expose:
-      - 8080
+      - ${API_EXPOSED_PORT}
     env_file:
       - .env
     ports:
-      - 7777:8080
+      - ${API_LOCAL_PORT}:${API_EXPOSED_PORT}
     links:
       - redis
       - mongodb
     volumes:
       - .:/git_gateway
-    environment:
-      FLASK_ENV: development
-    command: gunicorn -b 0.0.0.0:8080 --reload git_gateway.app:app
+    command: gunicorn -b 0.0.0.0:${API_EXPOSED_PORT} --reload git_gateway.app:app
 
 volumes:
   redis: {}
