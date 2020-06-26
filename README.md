@@ -17,8 +17,8 @@ Detalha um repositório de um usuário.
 
 ### Para desenvolvimento da aplicação
 
-- [Docker] (https://docs.docker.com/)
-- [Docker Compose] (https://docs.docker.com/compose/)
+- [Docker](https://docs.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
 ## Colocando a Aplicação de Pé
 
