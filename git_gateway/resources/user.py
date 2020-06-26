@@ -1,7 +1,7 @@
 from http import HTTPStatus
 from git_gateway.services.user import User as UserService
-from git_gateway.lib.cache import flask_cache
-from git_gateway.lib.db import mongo_client
+from git_gateway.utils.cache import flask_cache
+from git_gateway.utils.db import mongo_client
 from os import environ
 from flask_restx import Resource
 
